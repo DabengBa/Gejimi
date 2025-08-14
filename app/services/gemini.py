@@ -259,7 +259,9 @@ class GeminiClient:
         
         # 3. 添加 tool_config 到 data
         if tool_config:
-            data["tool_config"] = tool_config
+            # 仅当存在函数声明或模式为 "NONE" 时才添加 tool_config
+            if function_declarations or tool_config.get("function_calling_config", {}).get("mode") == "NONE":
+                data["tool_config"] = tool_config
 
         if system_instruction:
             data["system_instruction"] = system_instruction    
